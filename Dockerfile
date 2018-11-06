@@ -14,6 +14,9 @@ RUN apt-get update -y && \
   freetds-dev \
   libnss3 libxi6 libgconf-2-4
 
+# Install Rsync/git
+RUN apt-get update && apt-get install -y rsync git
+
 # Install deps + add Chrome Stable + purge all the things
 RUN apt-get update && apt-get install -y \
     apt-transport-https \
@@ -33,13 +36,6 @@ RUN wget https://chromedriver.storage.googleapis.com/2.36/chromedriver_linux64.z
 	unzip chromedriver_linux64.zip && \
 	mv chromedriver /usr/local/bin/
 
-ADD Gemfile /Gemfile
-
-RUN bundle install
-
-# Install Jekyll
-RUN gem install jekyll
-
 # Install nodejs & stuff
 RUN curl -sL https://deb.nodesource.com/setup_6.x -o nodesource_setup.sh && \
     bash nodesource_setup.sh && \
@@ -48,7 +44,3 @@ RUN curl -sL https://deb.nodesource.com/setup_6.x -o nodesource_setup.sh && \
 # Install Bower & Grunt
 RUN npm install -g bower gulp gulp-autoprefixer gulp-cache child_process gulp-imagemin gulp-sass imagemin-pngquant browser-sync grunt-cli && \
     echo '{ "allow_root": true }' > /root/.bowerrc
-
-# Install Rsync/git
-RUN apt-get update && apt-get install -y rsync git
-
